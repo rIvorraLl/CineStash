@@ -1,3 +1,21 @@
+/*
+ * CineStash
+ * Copyright (C) 2026 rIvorraLl [@github.com]
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.cinestash.infrastructure.config;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -8,9 +26,16 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Infrastructure component that launches the system's default browser on startup.
+ * Automatically points to the application's local URL.
+ */
 @Component
 public class BrowserLauncher {
 
+    /**
+     * Listens for the ApplicationReadyEvent and executes the browser launch command.
+     */
     @EventListener(ApplicationReadyEvent.class)
     public void launchBrowser() {
         Logger logger = Logger.getLogger(BrowserLauncher.class.getName());
@@ -33,7 +58,7 @@ public class BrowserLauncher {
             pb.start();
 
         } catch (IOException e) {
-            logger.log(Level.INFO, "Failed to auto-launch browser: {}", e.getMessage());
+            logger.log(Level.INFO, "Failed to auto-launch browser: {0}", e.getMessage());
         }
     }
 }
