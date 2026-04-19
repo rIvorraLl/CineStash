@@ -32,7 +32,7 @@ CineStash tries to follow modern software engineering standards, including **Hex
 #### Option 1: Development Mode (Requires Maven)
 If you have **Maven** installed, you can build and run the application directly from the source:
 ```bash
-git clone https://github.com/yourusername/cinestash.git
+git clone https://github.com/rIvorraLl/cinestash.git
 cd cinestash
 mvn clean install
 mvn spring-boot:run
