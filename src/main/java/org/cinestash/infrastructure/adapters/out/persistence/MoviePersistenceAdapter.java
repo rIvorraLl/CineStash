@@ -1,6 +1,7 @@
 package org.cinestash.infrastructure.adapters.out.persistence;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cinestash.application.ports.out.MovieRepositoryPort;
 import org.cinestash.domain.model.Movie;
 import org.cinestash.domain.model.PagedResult;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MoviePersistenceAdapter implements MovieRepositoryPort {
@@ -17,21 +19,28 @@ public class MoviePersistenceAdapter implements MovieRepositoryPort {
 
     @Override
     public Movie save(Movie movie) {
+        log.debug("Persisting movie entity to database: {}", movie.title());
         MovieEntity entity = toEntity(movie);
-        return toDomain(jpaRepository.save(entity));
+        MovieEntity savedEntity = jpaRepository.save(entity);
+        log.debug("Successfully saved movie with ID: {}", savedEntity.getId());
+        return toDomain(savedEntity);
     }
 
     @Override
     public void saveAll(List<Movie> movies) {
+        log.info("Batch saving {} movies.", movies.size());
         jpaRepository.saveAll(movies.stream().map(this::toEntity).toList());
+        log.debug("Successfully saved {} movies.", movies.size());
     }
 
     @Override
     public PagedResult<Movie> findAll(String query, int page, int size, String sortBy) {
+        log.debug("Querying movies with search term '{}', page {}, size {}, sort {}", query, page, size, sortBy);
         Sort sort = sortBy.equalsIgnoreCase("stars") ? Sort.by("stars").descending() : Sort.by("dateOfView").descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<MovieEntity> result = jpaRepository.searchMovies(query, pageable);
+        log.debug("Found {} movies for search query '{}'", result.getTotalElements(), query);
 
         return new PagedResult<>(
                 result.getContent().stream().map(this::toDomain).toList(),
@@ -42,10 +51,15 @@ public class MoviePersistenceAdapter implements MovieRepositoryPort {
     }
 
     @Override
-    public void deleteById(Long id) { jpaRepository.deleteById(id); }
+    public void deleteById(Long id) { 
+        log.debug("Deleting movie with ID: {}", id);
+        jpaRepository.deleteById(id);
+        log.debug("Movie with ID {} deleted from database.", id);
+    }
 
     @Override
     public List<Movie> findAllForExport() {
+        log.debug("Fetching all movies for export from database.");
         return jpaRepository.findAll().stream().map(this::toDomain).toList();
     }
 

@@ -2,6 +2,8 @@ package org.cinestash.domain.service;
 
 import org.cinestash.domain.model.Movie;
 import org.cinestash.domain.model.MovieStats;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +13,13 @@ import java.util.stream.Collectors;
 
 public class MovieStatisticsCalculator {
 
+    private static final Logger log = LoggerFactory.getLogger(MovieStatisticsCalculator.class);
+
     public MovieStats calculate(List<Movie> movies) {
+        log.debug("Starting statistics calculation for {} movies.", movies != null ? movies.size() : 0);
+        
         if (movies == null || movies.isEmpty()) {
+            log.debug("Movie list is empty, returning empty statistics.");
             return new MovieStats(0, 0.0, "N/A", "N/A", Map.of());
         }
 
@@ -53,6 +60,9 @@ public class MovieStatisticsCalculator {
                 .map(Map.Entry::getKey)
                 .orElse("N/A");
 
-        return new MovieStats(movies.size(), Math.round(avg * 10.0) / 10.0, topDir, topAct, perMonth);
+        MovieStats stats = new MovieStats(movies.size(), Math.round(avg * 10.0) / 10.0, topDir, topAct, perMonth);
+        log.debug("Statistics calculation complete: totalMovies={}, avgRating={}", stats.totalMovies(), stats.averageRating());
+        
+        return stats;
     }
 }
