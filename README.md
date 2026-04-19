@@ -17,7 +17,7 @@ CineStash is built on the principles of **user independence and privacy**:
 
 ## 🏗️ Technical Foundation
 
-CineStash follows modern software engineering standards, including **Hexagonal Architecture (Ports & Adapters)** and **SOLID** principles. This ensures a clean separation between core business logic and infrastructure, making the application robust and maintainable without over-complicating the user experience.
+CineStash tries to follow modern software engineering standards, including **Hexagonal Architecture (Ports & Adapters)** and **SOLID** principles, and it has been developed as an exercise to put those into practice.
 
 ---
 
@@ -29,8 +29,8 @@ CineStash follows modern software engineering standards, including **Hexagonal A
 
 ### Installation & Run
 
-#### Option 1: Running with Maven
-If you have Maven installed, you can build and run the application directly:
+#### Option 1: Development Mode (Requires Maven)
+If you have **Maven** installed, you can build and run the application directly from the source:
 ```bash
 git clone https://github.com/yourusername/cinestash.git
 cd cinestash
@@ -38,16 +38,20 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-#### Option 2: Running the Standalone JAR
-To run CineStash without needing Maven (useful for distribution):
-1.  **Build the package:**
-    ```bash
-    mvn clean package
-    ```
-2.  **Run the JAR:**
-    ```bash
-    java -jar target/cinestash-1.1.0.jar
-    ```
+#### Option 2: Production/Standalone Mode (Using the JAR)
+If you have been provided with the jar, or have built the project already, you can run CineStash on any system with Java 21.
+```bash
+# To run the pre-built JAR (adjust your actual jar version)
+java -jar target/cinestash-*.jar
+```
+*(Note: If you are building it yourself from source, you will need Maven once to run `mvn clean package` to generate this JAR file in the `target/` directory.)*
+
+### Accessing the App
+
+Once started, the application will:
+1.  **Automatically try to launch** your default web browser.
+2.  If the browser does not open automatically, you can access the interface manually at:
+    **[http://localhost:8080](http://localhost:8080)**
 
 ---
 
