@@ -1,3 +1,21 @@
+/*
+ * CineStash
+ * Copyright (C) 2026 rIvorraLl [@github.com]
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.cinestash.infrastructure.adapters.in.web;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +32,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * REST controller for movie-related operations.
+ * Acts as a primary adapter in the hexagonal architecture, exposing use cases over HTTP.
+ */
 @RestController
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
@@ -24,6 +46,12 @@ public class MovieController {
     private final MovieUseCase movieUseCase;
     private final MovieWebMapper mapper;
 
+    /**
+     * Adds a new movie entry.
+     *
+     * @param movieDto The data transfer object containing movie details.
+     * @return The created movie as a DTO.
+     */
     @PostMapping
     public ResponseEntity<MovieDto> add(@RequestBody MovieDto movieDto) {
         log.info("Received request to add movie: {}", movieDto.title());
@@ -33,6 +61,14 @@ public class MovieController {
         return ResponseEntity.ok(mapper.toDto(addedMovie));
     }
 
+    /**
+     * Searches and paginates movies based on criteria.
+     *
+     * @param q    The search query.
+     * @param page The page index.
+     * @param sort The sorting field.
+     * @return A paginated response of movie DTOs.
+     */
     @GetMapping
     public ResponseEntity<PagedResponse<MovieDto>> search(
             @RequestParam(defaultValue = "") String q,
@@ -51,6 +87,11 @@ public class MovieController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Retrieves overall movie statistics.
+     *
+     * @return A DTO containing aggregated stats.
+     */
     @GetMapping("/stats")
     public ResponseEntity<MovieStatsDto> getStats() {
         log.info("Received request for movie statistics.");
@@ -59,6 +100,11 @@ public class MovieController {
         return ResponseEntity.ok(stats);
     }
 
+    /**
+     * Exports all movie entries.
+     *
+     * @return A list of all movie DTOs.
+     */
     @GetMapping("/export")
     public ResponseEntity<List<MovieDto>> export() {
         log.info("Received request to export all movies.");
@@ -69,6 +115,12 @@ public class MovieController {
         return ResponseEntity.ok(dtos);
     }
 
+    /**
+     * Imports a list of movies.
+     *
+     * @param dtos The list of movie DTOs to import.
+     * @return An empty successful response.
+     */
     @PostMapping("/import")
     public ResponseEntity<Void> importData(@RequestBody List<MovieDto> dtos) {
         log.info("Received request to import {} movies.", dtos.size());
@@ -78,6 +130,12 @@ public class MovieController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Deletes a movie entry by ID.
+     *
+     * @param id The ID of the movie to delete.
+     * @return An empty successful response (No Content).
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.info("Received request to delete movie with ID: {}", id);

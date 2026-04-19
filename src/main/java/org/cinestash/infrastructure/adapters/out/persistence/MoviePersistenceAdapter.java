@@ -1,3 +1,21 @@
+/*
+ * CineStash
+ * Copyright (C) 2026 rIvorraLl [@github.com]
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.cinestash.infrastructure.adapters.out.persistence;
 
 import lombok.RequiredArgsConstructor;
@@ -10,6 +28,10 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
+/**
+ * Persistence adapter for Movie entities.
+ * Implements the Outward Port for movie data storage using Spring Data JPA.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -63,6 +85,12 @@ public class MoviePersistenceAdapter implements MovieRepositoryPort {
         return jpaRepository.findAll().stream().map(this::toDomain).toList();
     }
 
+    /**
+     * Maps a Movie domain object to a MovieEntity.
+     *
+     * @param m The domain model.
+     * @return The persistence entity.
+     */
     private MovieEntity toEntity(Movie m) {
         return MovieEntity.builder()
                 .id(m.id()).title(m.title()).director(m.director())
@@ -71,6 +99,12 @@ public class MoviePersistenceAdapter implements MovieRepositoryPort {
                 .build();
     }
 
+    /**
+     * Maps a MovieEntity to a Movie domain object.
+     *
+     * @param e The persistence entity.
+     * @return The domain model.
+     */
     private Movie toDomain(MovieEntity e) {
         return new Movie(e.getId(), e.getTitle(), e.getDirector(), e.getMainActors(),
                 e.getDateOfView(), e.getReview(), Rating.of(e.getStars()), e.getImageData());
