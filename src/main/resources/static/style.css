@@ -1,0 +1,66 @@
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --accent: #e50914;
+    --text: #ffffff;
+    --secondary-text: #b3b3b3;
+}
+
+body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
+header { text-align: center; margin-bottom: 30px; }
+header h1 { color: var(--accent); margin-bottom: 15px; }
+
+/* Navigation */
+.view-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+.view-nav button { background: #222; padding: 10px 20px; border-radius: 20px; color: var(--secondary-text); border: none; cursor: pointer; }
+.view-nav button.active-nav { background: var(--accent) !important; color: white !important; }
+
+main { max-width: 900px; margin: 0 auto; }
+
+/* Form Toggle & Action Bar */
+.action-bar { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+#toggle-form-btn { background: #28a745; font-size: 1rem; padding: 12px 24px; border-radius: 30px; color: white; border: none; cursor: pointer; }
+
+form, .chart-box, .stat-card { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333; }
+
+/* Inputs & General Buttons */
+.form-group { display: flex; gap: 15px; margin-bottom: 15px; }
+input, textarea { background: #2a2a2a; border: 1px solid #333; color: white; padding: 12px; border-radius: 6px; width: 100%; box-sizing: border-box; }
+
+/* This is the general rule that was making everything red */
+button { background: var(--accent); color: white; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; border: none; }
+.btn-alt { background: #333 !important; color: white !important; }
+
+/* Search & Controls Fix */
+.search-container { margin: 30px 0; width: 100%; }
+.controls { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+
+#list-section .controls button.sort-button {
+    background-color: #222 !important;
+    color: #bbb !important;
+}
+
+#list-section .controls button.sort-button.active-sort {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #fff;
+}
+
+/* Movie Cards */
+.movie-card { display: flex; gap: 20px; background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid var(--accent); }
+.poster-thumb { width: 80px; height: 120px; object-fit: cover; border-radius: 4px; cursor: pointer; }
+
+/* Stats View */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+.stat-card p { font-size: 1.4rem; color: var(--accent); font-weight: bold; margin: 5px 0 0; }
+.chart-box { height: 400px; }
+
+/* Lightbox */
+#lightbox { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+#lightbox-img { max-width: 90%; max-height: 80%; }
+.close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+
+/* Pagination */
+.pagination { display: flex; justify-content: center; gap: 5px; margin-top: 20px; }
+.pagination button { background: #222; }
+.pagination button.active { background: white; color: black; }

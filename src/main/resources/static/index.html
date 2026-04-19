@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineStash | My Cinema Diary</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header>
+    <h1>🎬 CineStash</h1>
+    <nav class="view-nav">
+        <button onclick="showView('diary')" id="nav-diary" class="active-nav">My Diary</button>
+        <button onclick="showView('stats')" id="nav-stats">Analytics</button>
+    </nav>
+</header>
+
+<main id="diary-view">
+    <div class="action-bar">
+        <button id="toggle-form-btn" onclick="toggleForm()">+ Add New Entry</button>
+    </div>
+
+    <section id="form-section" style="display: none;">
+        <form id="movie-form">
+            <div class="form-group">
+                <input type="text" id="title" placeholder="Movie Title" required>
+                <input type="text" id="director" placeholder="Director" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="actors" placeholder="Main Actors (comma separated)">
+                <input type="date" id="viewDate" required>
+            </div>
+            <textarea id="review" placeholder="Your review..."></textarea>
+            <div class="form-group" style="align-items: center;">
+                <div style="flex:1">
+                    <label>Poster:</label>
+                    <input type="file" id="imageFile" accept="image/*">
+                </div>
+                <div style="flex:1">
+                    <label>Rating:</label>
+                    <input type="number" id="stars" min="1" max="10" value="5">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" id="save-btn">Save Entry</button>
+                <button type="button" class="btn-alt" onclick="toggleForm()">Cancel</button>
+            </div>
+        </form>
+    </section>
+
+    <section id="list-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search title, director, actor..." oninput="debounceSearch()">
+        </div>
+
+        <div class="controls">
+            <button id="btn-sort-date" class="sort-button active-sort" onclick="loadMovies('date', 0)">By Date</button>
+            <button id="btn-sort-stars" class="sort-button" onclick="loadMovies('stars', 0)">By Stars</button>
+            <button onclick="exportData()" class="btn-alt">Backup JSON</button>
+            <button onclick="document.getElementById('importFile').click()" class="btn-alt">Restore JSON</button>
+            <input type="file" id="importFile" style="display:none" onchange="importData(event)">
+        </div>
+
+        <div id="movie-list"></div>
+        <div id="pagination-controls" class="pagination"></div>
+    </section>
+</main>
+
+<main id="stats-view" style="display:none;">
+    <div class="stats-grid">
+        <div class="stat-card"><h3>Total Movies</h3><p id="stat-total">0</p></div>
+        <div class="stat-card"><h3>Avg Rating</h3><p id="stat-avg">0.0</p></div>
+        <div class="stat-card"><h3>Top Director</h3><p id="stat-director">-</p></div>
+        <div class="stat-card"><h3>MVP Actor</h3><p id="stat-actor">-</p></div>
+    </div>
+    <div class="chart-box">
+        <canvas id="viewingChart"></canvas>
+    </div>
+</main>
+
+<div id="lightbox" onclick="this.style.display='none'">
+    <span class="close">&times;</span>
+    <img id="lightbox-img">
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
